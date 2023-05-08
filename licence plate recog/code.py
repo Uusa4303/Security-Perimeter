@@ -5,7 +5,12 @@ import numpy as np
 pytesseract.pytesseract.tesseract_cmd ="C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 
 cascade = cv2.CascadeClassifier("C:\\Users\\navee\\Desktop\\capstone\\Number_Plate_Detection\\haarcascade_russian_plate_number.xml")
-states ={"AN":"Andaman and Nicobar","AP":"Andhra Pradesh"}
+
+states ={"AP9CD6789": "NAVEEN UUSA -FLAT NO.2204",
+    "MH02BY3123": "HARSHAL JAIN -FLAT NO.5203",
+    "HR10AF3753":"BALAJI AVINASH -FLAT NO.4342"}
+
+    
 def extract_num(img_name):
     global read
     img =cv2.imread(img_name)
@@ -22,12 +27,14 @@ def extract_num(img_name):
         
         read = pytesseract.image_to_string(plate)
         read = ''.join(e for e in read if e.isalnum())
-        stat = read[0:2]
+        stat = read[:]
         try:
             print("car belongs to ",states[stat])
         except:
-            print("state not identified")
-        print(read)
+            print("UNKNOWN VEHICLE")
+        print("License Plate:", read)
+        
+        
         cv2.rectangle(img,(x,y),(x+w,y+h),(51,51,255),2)
         cv2.rectangle(img,(x,y -40),(x+w,y),(51,51,255),-1)
         font_scale =1.0
@@ -38,11 +45,11 @@ def extract_num(img_name):
         cv2.imshow("plate",plate)
 
 
-    cv2.imshow("result",img)
-    cv2.imwrite('result.jpg',img)
+    #cv2.imshow("result",img)
+    #cv2.imwrite('result.jpg',img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-extract_num("C:\\Users\\navee\\Desktop\\testimages\\im3.jpg")
+extract_num("C:\\Users\\navee\\Desktop\\testimages\\im1.jpg")
 
 
 
